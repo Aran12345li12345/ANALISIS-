@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <title>ANALISIS</title>
+    <script>
+        async function analyzeFile(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            alert(`Hasil Analisis: ${result.analysis}`);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Analisis Jurnal</h1>
+    </header>
+    <main>
+        <section class="upload-section">
+            <h2>Unggah File Jurnal</h2>
+            <p>Silakan unggah file jurnal dalam format PDF atau Word untuk dianalisis.</p>
+            <form onsubmit="analyzeFile(event)" method="post" enctype="multipart/form-data"></form>
+                <input type="file" name="journalFile" accept=".pdf, .doc, .docx" required>
+                <br>
+                <button type="submit">Unggah dan Analisis</button>
+            </form>
+        </section>
+        <section class="result-section" id="resultSection" style="display: none; margin-top: 20px;">
+            <h2>Hasil Analisis</h2>
+            <p id="analysisResult">Menunggu hasil analisis...</p>
+        </section>
+    </main>
+    <script>
+        async function analyzeFile(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            const resultSection = document.getElementById('resultSection');
+            const analysisResult = document.getElementById('analysisResult');
+            analysisResult.textContent = `Hasil Analisis: ${result.analysis}`;
+            resultSection.style.display = 'block';
+        }
+    </script>
+    <footer>
+        <p>&copy; 2023 Analisis Jurnal. All rights reserved.</p>
+    </footer>
+</body>
+</html>
